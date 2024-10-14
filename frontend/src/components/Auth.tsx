@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import 'sweetalert2/dist/sweetalert2.min.css';
 import '../styles/Auth.css';
+//Through out the project Sweet Alerts is used to alert the users
 
 const Auth: React.FC = () => {
     const [isSignUp, setIsSignUp] = useState(false);
@@ -40,12 +41,13 @@ const Auth: React.FC = () => {
         });
     };
 
+    //Check whether the input fields are Empty for the Signup Section
     const validateSignupData = () => {
         const { UserName, Email, Password } = signupData;
         if (!UserName || !Email || !Password) {
             Swal.fire({
-                title: 'Validation Error',
-                text: 'All fields are required!',
+                title: 'Oops!',
+                text: 'Please fill in all required fields before proceeding with your Sign-Up.',
                 icon: 'warning',
                 confirmButtonText: 'Ok',
             });
@@ -54,12 +56,13 @@ const Auth: React.FC = () => {
         return true;
     };
 
+    //Check whether the input fields are Empty for the Login Section
     const validateLoginData = () => {
         const { Email, Password } = loginData;
         if (!Email || !Password) {
             Swal.fire({
-                title: 'Validation Error',
-                text: 'Both fields are required!',
+                title: 'Oops!',
+                text: 'Please fill in all required fields before proceeding with your Login-In.',
                 icon: 'warning',
                 confirmButtonText: 'Ok',
             });
@@ -68,9 +71,10 @@ const Auth: React.FC = () => {
         return true;
     };
 
+    //Validation check is done before Signing Up
     const handleSignupSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!validateSignupData()) return; // Validation check
+        if (!validateSignupData()) return;
 
         try {
             const response = await fetch('http://localhost:5289/api/Auth/register', {
@@ -109,6 +113,7 @@ const Auth: React.FC = () => {
         }
     };
 
+    //Validation check is done before Login In
     const handleLoginSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!validateLoginData()) return;
