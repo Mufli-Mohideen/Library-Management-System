@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//The React App and the .NET backend works in different ports
+//The React App and the .NET backend works in different ports. used the CORS(Cross Orgin Resource Sharing) to handle that
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowReactApp", builder=>{
         builder.WithOrigins("http://localhost:3000")
@@ -33,6 +33,7 @@ if(app.Environment.IsDevelopment()){
 app.UseHttpsRedirection();
 app.UseCors("AllowReactApp");
 
+//Used for Routing Purposes
 app.MapControllers();
 
 
