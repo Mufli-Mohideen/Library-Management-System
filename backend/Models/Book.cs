@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagementSystem.Models
 {
+    //Book Entity
     public class Book
     {
         public int Id { get; set; }
