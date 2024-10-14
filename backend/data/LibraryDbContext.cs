@@ -8,9 +8,8 @@ namespace LibraryManagementSystem.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<User> Users { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite("Data Source=library.db");
+        public LibraryDbContext(DbContextOptions<LibraryDbContext> options): base(options){
+            
         }
     }
 }

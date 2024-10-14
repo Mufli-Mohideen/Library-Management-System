@@ -4,6 +4,9 @@ using System.Security.Cryptography;
 using System.Text;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+
 
 namespace LibraryManagementSystem.Controllers
 {
@@ -11,9 +14,9 @@ namespace LibraryManagementSystem.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly LibraryDbContext _context;
 
-        public AuthController(ApplicationDbContext context)
+        public AuthController(LibraryDbContext context)
         {
             _context = context;
         }
@@ -21,25 +24,29 @@ namespace LibraryManagementSystem.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            var user = _context.Users.SingleOrDefault(u => u.Email == request.Email || u.UserName == request.UserName);
+            var user = _context.Users.SingleOrDefault(u => u.Email == request.Email);
 
             if (user == null)
-                return Unauthorized("User not found");
+                return Unauthorized("User Not found");
 
             if (!VerifyPasswordHash(request.Password, user.PasswordHash))
-                return Unauthorized("Incorrect password");
+                return Unauthorized("Wrong Password");
 
-            return Ok("Login successful");
+            return Ok("Login Successful");
         }
 
-        // Optional: Method to register a new user
+        //Method to register a new user
         [HttpPost("register")]
         public IActionResult Register([FromBody] RegisterRequest request)
         {
+            if(request == null){
+                return BadRequest("Request Cannot be Null" );
+            }
             var existingUser = _context.Users.SingleOrDefault(u => u.Email == request.Email);
 
             if (existingUser != null)
                 return BadRequest("Email is already registered");
+
 
             var passwordHash = HashPassword(request.Password);
 
@@ -53,8 +60,11 @@ namespace LibraryManagementSystem.Controllers
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            return Ok("User registered successfully");
+            return Ok("User Registered Successfully");
         }
+
+
+
 
         private string HashPassword(string password)
         {

@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-route
 
 import Preloader from './components/Preloader';
 import Auth from './components/Auth';
+import Dashboard from './components/Dashboard';
+
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -36,6 +38,7 @@ const Main: React.FC = () => {
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );

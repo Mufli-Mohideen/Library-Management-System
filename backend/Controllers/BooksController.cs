@@ -1,6 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using LibraryManagementSystem.Data;
+using LibraryManagementSystem.Models;
+using Microsoft.EntityFrameworkCore;
+
+
 
 [Route("api/[controller]")]
 [ApiController]
@@ -13,14 +18,17 @@ public class BooksController : ControllerBase
         _context = context;
     }
 
-    // GET: api/books
+
+    // GET: api/books --Retrieving All the Books--
     [HttpGet]
-    public ActionResult<IEnumerable<Book>> GetBooks()
+    public IActionResult GetBooks()
     {
-        return _context.Books.ToList();
+        var books = _context.Books.ToList();
+        return Ok(books);
     }
 
-    // GET: api/books/book id
+
+    // GET: api/books/book id   --Retrieving Book by ID--
     [HttpGet("{id}")]
     public ActionResult<Book> GetBook(int id)
     {
@@ -34,17 +42,29 @@ public class BooksController : ControllerBase
         return book;
     }
 
-    // POST: api/books
+    // POST: api/books  --Adding a Book--
     [HttpPost]
-    public ActionResult<Book> PostBook(Book book)
+    public IActionResult PostBook(Book book)
     {
+        if (book == null)
+        {
+            return BadRequest("Book data is null");
+        }
         _context.Books.Add(book);
-        _context.SaveChanges();
+        try
+        {
+            _context.SaveChanges();
+        }
+        catch (Exception ex)
+        {
 
-        return CreatedAtAction("GetBook", new { id = book.Id }, book);
+            return StatusCode(500, "An error occurred while saving the book. Please try again.");
+        }
+        return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
     }
 
-    // PUT: api/books/book id
+
+    // PUT: api/books/book id   --Modifying a Book Detail--
     [HttpPut("{id}")]
     public IActionResult PutBook(int id, Book book)
     {
@@ -59,7 +79,7 @@ public class BooksController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/books/5
+    // DELETE: api/books/5  --Deleting a Book--
     [HttpDelete("{id}")]
     public ActionResult<Book> DeleteBook(int id)
     {
@@ -75,4 +95,6 @@ public class BooksController : ControllerBase
 
         return book;
     }
+            
+
 }
