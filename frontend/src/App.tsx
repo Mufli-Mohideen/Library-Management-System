@@ -5,7 +5,7 @@ import Preloader from './components/Preloader';
 import Auth from './components/Auth';
 import Dashboard from './components/Dashboard';
 
-
+//Using PreLoader to improve User Experience
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();

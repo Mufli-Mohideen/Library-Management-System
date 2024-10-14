@@ -21,6 +21,7 @@ namespace LibraryManagementSystem.Controllers
             _context = context;
         }
 
+        //Method to Handle User Login
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
@@ -65,7 +66,7 @@ namespace LibraryManagementSystem.Controllers
 
 
 
-
+        //As to increase the security I have added sha256
         private string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())
